@@ -1,0 +1,105 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        // {
+        //     "label": "build",
+        //     "type": "shell",
+        //     "command": "cmake .. && make -j4",
+        //     "options": {
+        //         "cwd": "${workspaceFolder}/build"
+        //     },
+        //     "problemMatcher": [],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        //     "presentation": {
+        //         "echo": true,
+        //         "reveal": "always",
+        //         "focus": false,
+        //         "panel": "shared",
+        //         "showReuseMessage": true,
+        //         "clear": true
+        //     }
+        // },
+        // {
+        //     "label": "buil",
+        //     "type": "shell",
+        //     "command": "./buildProto.sh",
+        //     "problemMatcher": [],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        // },
+        // {
+        //     "label": "buildProto",
+        //     "type": "shell",
+        //     "options": {
+        //         "cwd": "${workspaceFolder}/old_proto"
+        //     },
+        //     "command": "./buildProto.sh",
+        //     "problemMatcher": [],
+        // },
+        // {
+        //     "label": "buildXML",
+        //     "type": "shell",
+        //     "command": "./toXml.sh",
+        //     "problemMatcher": [],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        // },
+        // {
+        //     "label": "parseXML",
+        //     "type": "shell",
+        //     "command": "node parseXml.mjs",
+        //     "problemMatcher": [],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        //     "dependsOn": "buildXML"
+        // },
+        // {
+        //     "label": "genCPP",
+        //     "type": "shell",
+        //     "command": "node generateCPP.mjs",
+        //     "problemMatcher": [
+        //         "$jshint"
+        //     ],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        //     "dependsOn": "parseXML"
+        // },
+        // {
+        //     "label": "buildTest",
+        //     "type": "shell",
+        //     "options": {
+        //         "cwd": "${workspaceFolder}/build"
+        //     },
+        //     "command": "cmake .. -DCMAKE_BUILD_TYPE=Release && make test -j4", //-DCMAKE_BUILD_TYPE=Release
+        //     "problemMatcher": [
+        //         "$gcc"
+        //     ],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        //     "dependsOn": "genCPP",
+        //     "presentation": {
+        //         "echo": true,
+        //         "reveal": "always",
+        //         "focus": false,
+        //         "panel": "shared",
+        //         "showReuseMessage": true,
+        //         "clear": true
+        //     }
+        // }
+    ]
+}

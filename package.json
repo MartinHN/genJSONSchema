@@ -1,0 +1,19 @@
+{
+  "name": "genapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "bin": {
+    "genJSONSchema": "./index.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fast-xml-parser": "^4.1.3",
+    "typescript": "^4.9.5",
+    "yargs": "^17.7.1"
+  },
+  "devDependencies": {
+    "@types/yargs": "^17.0.22"
+  }
+}
