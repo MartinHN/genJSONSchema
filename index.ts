@@ -39,7 +39,7 @@ function getOpts() {
 const opts = getOpts();
 
 import { genXmls } from "./genXml.mjs"
-import { convertToJSON } from "./parseXml.mjs"
+import { convertToJSON } from "./parseXml.js"
 
 console.log(opts)
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), appPrefix));

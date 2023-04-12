@@ -8,7 +8,10 @@ import { resolve, basename, dirname } from 'path';
 
 export class XFile {
 
-    constructor(fileIn, originalPath) {
+    json: any = {}
+    filtered: any = {}
+    fileId: string = ''
+    constructor(public fileIn: string, public originalPath: string) {
         const options = {
             ignoreAttributes: false,
             parseAttributeValue: true,
@@ -24,20 +27,20 @@ export class XFile {
 
     }
 
-    printObj(o) {
-        const onlyNames = (key, value) => { if (key.startsWith("@") && !(key.startsWith("@_name"))) return undefined; else return value }
+    printObj(o: any) {
+        const onlyNames = (key: string, value: any) => { if (key.startsWith("@") && !(key.startsWith("@_name"))) return undefined; else return value }
         console.log(JSON.stringify(o, onlyNames, 1))
     }
 
-    getFileId(fileName) {
-        for (let f of Object.values(this.json.File)) {
+    getFileId(fileName: string) {
+        for (let f of Object.values(this.json.File) as any[]) {
             if (f["@_name"].includes(fileName))
                 return f["@_id"];
             // for (let a of Object.values(f)) { console.log(a); }
         }
     }
 
-    getContextName(s) {
+    getContextName(s: any) {
         const ctxId = s["@_context"];
 
         if ((ctxId !== undefined) && ctxId != "_1") {
@@ -51,21 +54,22 @@ export class XFile {
         return "";
     }
 
-    findId(id, allowedTypes) {
+    findId(id: string, allowedTypes: string[]) {
         for (let k of allowedTypes) {
-            const res = this.json[k].find(e => e["@_id"] == id)
+            const res = this.json[k].find((e: any) => e["@_id"] == id)
             if (res !== undefined) return [res, k];
         }
+        return [undefined, undefined]
     }
 
 
-    findTypeFromID(id) {
+    findTypeFromID(id: string) {
         const TypeNodes = ["Typedef", "FundamentalType", "Class", "Struct"]
         return this.findId(id, TypeNodes)
     }
 
 
-    getFieldMetaData(f) {
+    getFieldMetaData(f: any) {
         const tid = f["@_type"]
         const [to, foundType] = this.findTypeFromID(tid)
         let type = to["@_name"];
@@ -87,7 +91,7 @@ export class XFile {
         return meta;
     }
 
-    getMethodMetadata(f) {
+    getMethodMetadata(f: any) {
         const rtid = f["@_returns"]
         const [to, foundType] = this.findTypeFromID(rtid)
         let returnType = to["@_name"];
@@ -112,10 +116,10 @@ export class XFile {
         return meta;
     }
 
-    parseFieldOfStruct(structID) {
-        let res = []
+    parseFieldOfStruct(structID: string) {
+        let res: any[] = []
         if (this.filtered.Field === undefined) return res;
-        for (const f of this.filtered.Field.filter(e => e["@_context"] == structID)) {
+        for (const f of this.filtered.Field.filter((e: any) => e["@_context"] == structID)) {
             const m = this.getFieldMetaData(f);
             res.push(m);
 
@@ -124,24 +128,24 @@ export class XFile {
     }
 
 
-    parseMethodsOfStruct(structID) {
-        let res = []
+    parseMethodsOfStruct(structID: string) {
+        let res: any[] = []
         if (this.filtered.Method === undefined) return res;
-        for (const f of this.filtered.Method.filter(e => e["@_context"] == structID)) {
+        for (const f of this.filtered.Method.filter((e: any) => e["@_context"] == structID)) {
             const m = this.getMethodMetadata(f);
             res.push(m);
         }
         return res;
     }
 
-    writeTo(toPath, originalFileName) {
+    writeTo(toPath: string, originalFileName: string) {
         this.fileId = this.getFileId(originalFileName);
 
-        let filtered = {}
+        let filtered: any = {}
         for (let [k, v] of Object.entries(this.json)) {
             if (k.startsWith("@"))
                 continue
-            filtered[k] = this.json[k].filter(e => e["@_file"]?.includes(this.fileId));
+            filtered[k] = this.json[k].filter((e: any) => e["@_file"]?.includes(this.fileId));
             if (filtered[k].length == 0)
                 delete filtered[k]
         }
@@ -149,10 +153,10 @@ export class XFile {
         this.filtered = filtered;
         // this.printObj(filtered)
 
-        let jsonOut = { metadata: { originalFile: this.originalPath } }
-        let classLike = []
+        let jsonOut: any = { metadata: { originalFile: this.originalPath } }
+        let classLike: any[] = []
         if (filtered.Struct) classLike = classLike.concat(filtered.Struct)
-        if (filtered.Class) classLike = classLike.concat[filtered.Class]
+        if (filtered.Class) classLike = classLike.concat(filtered.Class)
         for (const s of classLike) {
             const sID = s["@_id"];
             let sName = s["@_name"];
@@ -187,7 +191,7 @@ export class XFile {
 };
 
 
-export function convertToJSON(fromPath, originalPath, toPath) {
+export function convertToJSON(fromPath: string, originalPath: string, toPath: string) {
     const xf = new XFile(fromPath, originalPath)
     xf.writeTo(toPath, originalPath);
 }

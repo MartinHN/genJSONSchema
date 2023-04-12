@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.mjs",
   "bin": {
-    "genJSONSchema": "./index.mjs"
+    "genJSONSchema": "./index.ts"
   },
   "author": "",
   "license": "ISC",

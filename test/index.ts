@@ -1,6 +1,6 @@
 import { execSync } from "child_process"
-import { genXml } from "../genXml.mjs"
-import { convertToJSON } from "../parseXml.mjs"
+import { genXml } from "../genXml"
+import { convertToJSON } from "../parseXml"
 
 const xmlPath = "gen/RootAPI.xml"
 const originalPath = "simple/RootAPI.h"
