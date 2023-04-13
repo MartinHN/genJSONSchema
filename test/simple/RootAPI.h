@@ -12,6 +12,7 @@ struct SimpleMemberClass {
 struct RootAPI {
   std::string name = "lololo";
   unsigned char counter = 0;
+  int intValue = 0;
   std::array<float, 3> color;
 
   // void simpleAction() { std::cout << "simple action " << std::endl; }
