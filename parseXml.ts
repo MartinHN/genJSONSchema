@@ -141,6 +141,8 @@ export class XFile {
         const fileP = fileObj["@_name"]
         const fileL = readFileSync(fileP).toString().split('\n')[lineN]
         const comments = fileL.split("//")[1]
+        if (!comments)
+            return []
         return comments.split(",").map(e => e.trim())
     }
 
