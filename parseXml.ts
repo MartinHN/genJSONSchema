@@ -5,6 +5,19 @@ import { resolve, basename, dirname } from 'path';
 import { exit } from 'process';
 
 
+function isNumeric(str: any) {
+    if (typeof str != "string") return false // we only process strings!  
+    return !isNaN(str as any) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
+function isNumericCppType(t: string) {
+    t = t.replace("unsigned", "")
+    if (t.includes("uint"))
+        return true;
+    return ["int", "short", "float", "double"].includes(t)
+}
+
 //xml file from https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms762271(v=vs.85)
 
 export class XFile {
@@ -94,10 +107,16 @@ export class XFile {
         if (type == undefined)
             throw Error("type does not have name or ctx : " + JSON.stringify(to))
         const cppType = type;
+        let init = f["@_init"]
+
+        if (typeof (init) == "string" && init.endsWith(".F"))
+            init = init.replace(".F", "")
+        if (isNumericCppType(cppType) && isNumeric(init))
+            init = parseFloat(init)
         const meta = {
             name: f["@_name"],
             type,
-            init: f["@_init"],
+            init,
             // entry: f,
 
         }
@@ -177,11 +196,12 @@ export class XFile {
         for (let [k, v] of Object.entries(this.json)) {
             if (k.startsWith("@"))
                 continue
-            if (k.startsWith("AtomicType"))
-                continue
+            let arr = this.json[k]
+            if (!Array.isArray(arr))
+                arr = [arr]
 
             // console.log(">>>>>>", Object.keys(this.json), k, this.json[k])
-            filtered[k] = this.json[k].filter((e: any) => e["@_file"]?.includes(this.fileId));
+            filtered[k] = arr.filter((e: any) => e["@_file"]?.includes(this.fileId));
             if (filtered[k].length == 0)
                 delete filtered[k]
         }
